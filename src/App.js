@@ -33,7 +33,7 @@ function App() {
     <ScrollToTop>
       <div>
       <Switch>
-     {/* <Route exact path="/">
+     <Route exact path="/">
           <Home/>
         </Route>
         <Route exact path="/login">
@@ -41,8 +41,8 @@ function App() {
         </Route>
         <Route exact path="/home">
           <Home/>
-        </Route> */}
-        {staticRoutes.map(item => {
+        </Route>
+        {/* {staticRoutes.map(item => {
               return (
                 <Route
                   key={item.path}
@@ -52,7 +52,7 @@ function App() {
                   component={lazy(item.path)}
                 />
               );
-            })}
+            })} */}
         </Switch>
         </div>
       </ScrollToTop>
