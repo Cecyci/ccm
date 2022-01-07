@@ -1,9 +1,35 @@
 import Login from './pages/login'
 import Home from './pages/home'
-import { HashRouter, Routes, Route, Link, BrowserRouter, NavLink, Router } from 'react-router-dom'
 import Value from './pages/value';
 import routes from './routes'
+import { BrowserRouter as Router, Route, Switch, withRouter } from 'react-router-dom';
+import { routes as staticRoutes } from "./router";
+import { _ScrollToTop } from './utils/scrollTop';
+import MyErrorBoundary from "./utils/myErrorBoundary";
+
+// ErrorBoundary在组件树及其子树的渲染 生命周期 constructors捕捉错误
+const lazy = (componentPath, props) => {
+  const AsyncPage = staticRoutes.find(ele => ele.path === componentPath)?.component;
+
+  if (AsyncPage) {
+    return () => (
+      <MyErrorBoundary >
+        <AsyncPage {...props} />
+      </MyErrorBoundary>
+    );
+  } else {
+    // 404提示页
+    return () => (
+      <MyErrorBoundary>
+        {/* <NotFoundPage /> */}
+      </MyErrorBoundary>
+    );
+  }
+};
+
 function App() {
+
+  const ScrollToTop = withRouter(_ScrollToTop);
   return (
     // <Fragment>
     //   <HashRouter>
@@ -49,14 +75,44 @@ function App() {
     </Routes>
   </BrowserRouter > */
 
-    <BrowserRouter>
-      <Routes>
-        {routes.map(({ path, name, component }) =>
-          <Route path={path} key={name} element={component} />
-        )}
-      </Routes>
-    </BrowserRouter>
+    // <BrowserRouter>
+    //   <Routes>
+    //     {routes.map(({ path, name, component }) =>
+    //       <Route path={path} key={name} element={component} />
+    //     )}
+    //   </Routes>
+    // </BrowserRouter>
 
+    <MyErrorBoundary>
+      <Router basename="/dashboard">
+        <ScrollToTop>
+          <div>
+            <Switch>
+              <Route exact path="/">
+                <Home />
+              </Route>
+              <Route exact path="/login">
+                <Login />
+              </Route>
+              <Route exact path="/home">
+                <Home />
+              </Route>
+              {/* {staticRoutes.map(item => {
+              return (
+                <Route
+                  key={item.path}
+                  exact
+                  path={item.path}
+                  // component={item.component}
+                  component={lazy(item.path)}
+                />
+              );
+            })} */}
+            </Switch>
+          </div>
+        </ScrollToTop>
+      </Router>
+    </MyErrorBoundary>
   );
 }
 

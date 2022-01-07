@@ -1,8 +1,6 @@
-import { useNavigate } from "react-router-dom";
 import { Card, Form, Input, Button } from 'antd';
 const FormItem = Form.Item;
 function Login(props) {
-    let navigate = useNavigate();
     const { getFieldDecorator } = props.form;
     function handleSubmit() {
         alert('submit')
